@@ -1,0 +1,64 @@
+server:
+  port: 8003
+
+spring:
+  config:
+    server:
+      #bootstrap: true
+      git:
+        uri: https://gitee.com/dongdong-git/dongdong-config-center.git
+        username: dongdong-git
+        password: long123456
+        searchPath: config-center
+        default-label: master
+    label: master
+  #rabbitMQ
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  #Redis
+  redis:
+    host: 127.0.0.1
+    database: 1
+    port: 6379
+    password: 123456
+    jedis:
+      pool:
+        max-active: 50
+        max-wait: 30
+        max-idle: 25
+        min-idle: 20
+  application:
+    # 应用名称
+    name: spring-cloud-config-center
+
+# eureka客户端配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://server1:8000/eureka/
+    #  client端，开启健康检查（需要spring-boot-starter-actuator依赖）
+    healthcheck:
+      enabled: true
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    #  设置租期更新时间，默认30秒
+    lease-renewal-interval-in-seconds: 2
+    #  设置租期到期时间，默认90秒
+    lease-expiration-duration-in-seconds: 3
+
+
+# actuator配置
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: '*'
+  health:
+    solr:
+      enabled: false
+
+
